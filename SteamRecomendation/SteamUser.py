@@ -56,12 +56,9 @@ class SteamUser:
     
     def get_games_data(self):
         all_data = {}  # Zmieniamy na słownik, bo dane są w formacie {appid: {game_data}}
-        
-
         url = f"{GAME_DATA_BASE_URL}all"
         params = {}
         data = self.make_requests(url, params)
-        print(f"Pobieranie danych ze strony: {url}")
         if isinstance(data, dict):  # Sprawdzamy, czy dane są w formacie słownika
                 all_data.update(data)  # Scalanie słowników
         
