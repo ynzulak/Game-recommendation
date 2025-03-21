@@ -1,4 +1,4 @@
-import SteamUser as SteamUser
+import SteamData as SteamData
 
 API_KEY = "E895AD194456E34CA26E6270C5FE1C7B"
 STEAM_ID = "76561198057456128"
@@ -12,7 +12,7 @@ class UserData:
         self.appid = appid
         self.score = score
 
-steam_api = SteamUser.SteamUser(STEAM_ID, API_KEY)
+steam_api = SteamData.SteamUser(STEAM_ID, API_KEY)
 owned_games = steam_api.get_owned_games(STEAM_ID)
 recently_played = steam_api.get_recently_played_games(STEAM_ID)
 
@@ -59,14 +59,14 @@ def collecting_all_game_data(game, game_data_dict):
 
 from collections import Counter
 
-def collecting_game_data(game, data, game_data_dict, time=""):
+def collecting_game_data(game, data, time=""):
     game_time = game[time] / 60 
     game_id = game["appid"]
     
-    if game_id not in game_data_dict:
+    if game_id not in data:
         return 
 
-    game_data = game_data_dict[game_id]
+    game_data = data[game_id]
     game_positive = game_data["positive"]
     game_negative = game_data["negative"]
     
@@ -99,22 +99,18 @@ def collecting_game_data(game, data, game_data_dict, time=""):
     ))
 
 
-user_game_data = []
 
-for game in user_game_data:
-    break
-    print(f"{game.name}: Genre: {game.genre}, Tags: {', '.join(game.tags)}, Time spent: {game.playtime:.1f} hours, Game score: {game.score:.1f}")
-""
+
+for game in owned_games:
+    game_time = game["playtime_forever"] / 60
+    print(f"{game["name"]}, Time spent: {game_time:.1f} hours")
+
 print("========================================================")
 
 
-recently_played_games = []
-
-
-for game in recently_played_games:
-    break
-    print(f"{game.name}: Genre: {game.genre}, Tags: {', '.join(game.tags)}, Time spent: {game.playtime:.1f} hours, Game score: {game.score:.1f}")
-    
+for game in recently_played:
+    game_time = game["playtime_forever"] / 60
+    print(f"{game["name"]}, Time spent: {game_time:.1f} hours")
 
 
 
