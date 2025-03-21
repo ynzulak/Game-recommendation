@@ -15,9 +15,6 @@ class UserData:
 steam_api = SteamUser.SteamUser(STEAM_ID, API_KEY)
 owned_games = steam_api.get_owned_games(STEAM_ID)
 recently_played = steam_api.get_recently_played_games(STEAM_ID)
-all_games_data = steam_api.get_games_data()
-
-
 
 def calculate_score(positive, negative):
     total_reviews = positive + negative
@@ -102,12 +99,7 @@ def collecting_game_data(game, data, game_data_dict, time=""):
     ))
 
 
-game_data_dict = {game["appid"]: game for game in all_games_data.values()}
-# print(game_data_dict)
 user_game_data = []
-
-for game in owned_games:
-    collecting_game_data(game, user_game_data, game_data_dict, time="playtime_forever")
 
 for game in user_game_data:
     break
@@ -118,25 +110,12 @@ print("========================================================")
 
 recently_played_games = []
 
-for game in recently_played:
-    collecting_game_data(game, recently_played_games, game_data_dict, time="playtime_2weeks")
 
 for game in recently_played_games:
     break
     print(f"{game.name}: Genre: {game.genre}, Tags: {', '.join(game.tags)}, Time spent: {game.playtime:.1f} hours, Game score: {game.score:.1f}")
     
-import json
 
-all_games_data_list = []
-
-for game in all_games_data.values():
-    appid = game["appid"]
-    game_data = steam_api.get_games_data_by_id(appid) 
-    all_games_data_list.append(game_data) 
-
-
-with open("games_data.json", "w", encoding="utf-8") as file:
-    json.dump(all_games_data_list, file, ensure_ascii=False, indent=4)
 
 
 
