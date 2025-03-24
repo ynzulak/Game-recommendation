@@ -4,6 +4,7 @@ BASE_URL = "http://api.steampowered.com/"
 USER_URL = BASE_URL + "ISteamUser/GetPlayerSummaries/v0002/"
 GAME_URL = BASE_URL + "IPlayerService/GetOwnedGames/v0001/"
 RECENTLY_PLAYED_URL = BASE_URL + "IPlayerService/GetRecentlyPlayedGames/v0001"
+GAME_DATA_BASE_URL = "https://steamspy.com/api.php?request=appdetails&appid="
 
 class SteamUser:
     def __init__(self, steam_id, api_key):
@@ -45,3 +46,9 @@ class SteamUser:
 
         data = self.make_requests(url, params)
         return data["response"]["games"] if data else []
+    
+    def get_games_data(self, app_id):
+        url = f"{GAME_DATA_BASE_URL}{app_id}"
+        params = {}
+        data = self.make_requests(url, params)
+        return data
