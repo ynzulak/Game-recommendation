@@ -1,4 +1,4 @@
-# This code fetches game data from the SteamSpy API and saves it to a JSON file. It includes all needed data to use in code.
+# This code fetches game data from the SteamSpy API and saves it to a JSON file. It includes all needed data to use in code. It may take some time, you can copy all data from my file if you don't want to test it.
 
 import requests
 import json
@@ -41,7 +41,12 @@ all_games_data_list = []
 for game in all_games_data.values():
     appid = game["appid"]
     game_data = get_games_data_by_id(appid) 
-    all_games_data_list.append(game_data) 
+    all_games_data_list.append(game_data)
+
+
+for game in all_games_data_list:
+         game.pop("languages")
+
 
 
 with open("games_data.json", "w", encoding="utf-8") as file:

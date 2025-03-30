@@ -1,6 +1,8 @@
 import SteamData as SteamData
 import json
+import pandas as pd
 import concurrent.futures
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 API_KEY = "E895AD194456E34CA26E6270C5FE1C7B"
 STEAM_ID = "76561198057456128"
@@ -26,11 +28,18 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
 
 owned_games_data = list(results)
 
-# test if its working
-for game in owned_games_data:
-    print(f"{game["name"]}, Tags: {game["tags"]}")
 
 # Make coisne similarity
+for game in owned_games_data:
+    game.pop("languages")
+    for owned_game in owned_games:
+        if game['appid'] == owned_game['appid']:
+            game["playtime_forever"] = owned_game['playtime_forever']
+
+
+print(owned_games_data[0], owned_games_data[1])
+
+
 
 def calculate_score(positive, negative):
     total_reviews = positive + negative
@@ -38,24 +47,16 @@ def calculate_score(positive, negative):
         return 0
     return positive / total_reviews
 
-for game in owned_games:
-    break
-    if {game["appid"]} in owned_games == {game["appid"]} in all_games_data:
-        print(game)
 
-
-for game in owned_games:
+for game in owned_games_data:
     break
+    score = calculate_score(game["positive"], game["negative"])
     game_time = game["playtime_forever"] / 60
-    print(f"{game["name"]}, Time spent: {game_time:.1f} hours")
-
-print("========================================================")
+    print(f"{game["name"]}, Time spent: {game_time:.1f} hours, tags: {game["tags"]}, score: {score}")
 
 
-for game in recently_played:
-    break
-    game_time = game["playtime_forever"] / 60
-    print(f"{game["name"]}, Time spent: {game_time:.1f} hours")
+
+
 
 
 
