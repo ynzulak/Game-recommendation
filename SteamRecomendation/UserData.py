@@ -37,9 +37,15 @@ for game in owned_games_data:
             game["playtime_forever"] = owned_game['playtime_forever']
 
 
-print(owned_games_data[0], owned_games_data[1])
+def get_unique_tags(game_gata):
+    unique_tags = set()
+    for tags in all_games_data:
+        unique_tags.update(tags["tags"].keys())
 
+    return sorted(unique_tags)  
 
+unique_tags = get_unique_tags(all_games_data)
+print(unique_tags) 
 
 def calculate_score(positive, negative):
     total_reviews = positive + negative
