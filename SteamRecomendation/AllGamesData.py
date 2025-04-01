@@ -47,8 +47,6 @@ for game in all_games_data.values():
 for game in all_games_data_list:
          game.pop("languages")
 
-
-
 with open("games_data.json", "w", encoding="utf-8") as file:
     json.dump(all_games_data_list, file, ensure_ascii=False, indent=4)
 
