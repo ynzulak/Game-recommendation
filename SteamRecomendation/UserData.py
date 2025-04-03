@@ -47,11 +47,6 @@ def get_unique_tags(game_gata):
     return sorted(unique_tags)  
 
 
-
-unique_tags = get_unique_tags(all_games_data)
-# print(unique_tags) 
-
-
 # Make vectorizer coisne similarity
 
 game_names = [game["name"] for game in all_games_data]
@@ -62,7 +57,25 @@ tfidf_matrix = vectorizer.fit_transform(tag_strings)
 
 similarity_matrix = cosine_similarity(tfidf_matrix)
 df_sim = pd.DataFrame(similarity_matrix, index=game_names, columns=game_names)
-print(df_sim)
+
+
+def recommend_games(game_name, df_sim, top_n=5):
+
+    if game_name not in df_sim.index:
+        return f"Game '{game_name}' not found."
+
+    similar_games = df_sim[game_name].sort_values(ascending=False)
+
+    recommended_games = similar_games.iloc[1:top_n+1]
+
+    return recommended_games
+
+for recomendations in recently_played:
+    recommendations = recommend_games(recomendations["name"], df_sim, top_n=5)
+    print(recommendations)
+    print("--------------------------------------------------------")
+
+
 
 
 def calculate_score(positive, negative):
