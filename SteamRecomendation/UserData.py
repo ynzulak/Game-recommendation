@@ -62,7 +62,9 @@ df_sim = pd.DataFrame(similarity_matrix, index=game_names, columns=game_names)
 def recommend_games(game_name, df_sim, top_n=5):
 
     if game_name not in df_sim.index:
-        return f"Game '{game_name}' not found."
+        return f"Game '{game_name}' not found in data."
+    else:
+        print(f"{game_name} is similar to:")
 
     similar_games = df_sim[game_name].sort_values(ascending=False)
 
@@ -70,12 +72,18 @@ def recommend_games(game_name, df_sim, top_n=5):
 
     return recommended_games
 
-for recomendations in recently_played:
-    recommendations = recommend_games(recomendations["name"], df_sim, top_n=5)
-    print(recommendations)
-    print("--------------------------------------------------------")
+print("Based on your recently played games:")
 
+for game in recently_played:
+    game_name = game["name"]
+    recommendations = recommend_games(game_name, df_sim, top_n=5)
 
+    if isinstance(recommendations, str):
+        print(recommendations)
+    else:
+        for recommended_game in recommendations.index:
+            print(f" • {recommended_game}")
+        print("-" * 60)
 
 
 def calculate_score(positive, negative):
