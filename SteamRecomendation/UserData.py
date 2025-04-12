@@ -1,12 +1,13 @@
 import SteamData as SteamData
 import json
+import statistics
 import pandas as pd
 import concurrent.futures
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 API_KEY = "E895AD194456E34CA26E6270C5FE1C7B"
-STEAM_ID = "76561198057456128"
+STEAM_ID = "76561198969793537"
 
 # Getting data from game_data file
 
@@ -46,6 +47,27 @@ def get_unique_tags(game_gata):
 
     return sorted(unique_tags)  
 
+# ///////////////////////////////////////////////////////////////////
+
+def calculate_score(positive, negative):
+    total_reviews = positive + negative
+    if total_reviews < 100:
+        return 0
+    return (positive / total_reviews) * 100 
+
+
+total_playtime = []
+for game_time in owned_games_data:
+    time = game_time["playtime_forever"] / 60
+    total_playtime.append(time)
+    median_playtime = statistics.median(total_playtime)
+
+
+for game in owned_games_data:
+    break
+    score = calculate_score(game["positive"], game["negative"])
+    game_time = game["playtime_forever"] / 60
+    print(f"{game["name"]}, Time spent: {game_time:.1f} hours, score: {score}")
 
 # Make vectorizer coisne similarity
 
@@ -74,29 +96,51 @@ def recommend_games(game_name, df_sim, top_n=5):
 
 print("Based on your recently played games:")
 
-for game in recently_played:
-    game_name = game["name"]
-    recommendations = recommend_games(game_name, df_sim, top_n=5)
+# for game in recently_played:
+#     game_name = game["name"]
+#     recommendations = recommend_games(game_name, df_sim, top_n=5)
 
-    if isinstance(recommendations, str):
-        print(recommendations)
-    else:
-        for recommended_game in recommendations.index:
-            print(f" • {recommended_game}")
-        print("-" * 60)
+#     if isinstance(recommendations, str):
+#         print(recommendations)
+#     else:
+#         for recommended_game in recommendations.index:
+#             print(f" • {recommended_game}")
+#         print("-" * 60)
+        
+game_count = 0
+for game in owned_games:
+    
+    if game["playtime_forever"] / 60 >= median_playtime:
+        game_count += 1
+        game_name = game["name"]
+        recommendations = recommend_games(game_name, df_sim, top_n=5)
+
+        if isinstance(recommendations, str):
+            print(recommendations)
+        else:
+            for recommended_game in recommendations.index:
+                print(f" • {recommended_game}")
+            print("-" * 60)
+            
+# def recommend_games_from_recent(recently_played, df_sim, top_n=10):
+#     played_names = [game["name"] for game in recently_played if game["name"] in df_sim.index]
+
+#     if not played_names:
+#         return "None of the recently played games are in the similarity matrix."
+
+#     combined_sim = df_sim.loc[played_names].sum()
+
+#     combined_sim = combined_sim.drop(labels=played_names, errors="ignore")
+
+#     recommended_games = combined_sim.sort_values(ascending=False).head(top_n)
+
+#     return recommended_games
+
+# recommendations = recommend_games_from_recent(recently_played, df_sim, top_n=10)
+# print(recommendations)
 
 
-def calculate_score(positive, negative):
-    total_reviews = positive + negative
-    if total_reviews == 0:
-        return 0
-    return positive / total_reviews
 
-for game in owned_games_data:
-    break
-    score = calculate_score(game["positive"], game["negative"])
-    game_time = game["playtime_forever"] / 60
-    print(f"{game["name"]}, Time spent: {game_time:.1f} hours, tags: {game["tags"]}, score: {score}")
 
 
 
