@@ -123,20 +123,3 @@ Game-recommendation/
 ```
 
 
----
-
-## Possible Improvements
-
-- Implement collaborative filtering  
-- Improve scoring using vector similarity (e.g. cosine similarity)  
-- Replace JSON with a database  
-- Add API layer (e.g. FastAPI)  
-- Build frontend interface  
-- Add data visualization  
-
-
----
-
-## License
-
-MIT
