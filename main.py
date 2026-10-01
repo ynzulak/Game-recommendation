@@ -3,6 +3,7 @@ from SteamRecommendation.recommendation_types.per_game_based import per_game_rec
 from SteamRecommendation.recommendation_types.recently_played_based import recently_played_recommendation
 
 def main():
+
     while True:
         print("Choose, what type of recomendation do you have to see:")
         print("1. Based on you whole library")

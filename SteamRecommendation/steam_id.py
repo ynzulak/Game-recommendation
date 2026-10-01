@@ -1,7 +1,6 @@
 import re
 
 def extract_steam_id():
-    print("Steam Game Recommendation System")
     url_or_id = input("Please Enter your SteamID (URL or ID): ")
     
     match = re.search(r"steamcommunity\.com/profiles/(\d+)", url_or_id)

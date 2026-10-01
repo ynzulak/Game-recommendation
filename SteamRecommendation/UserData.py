@@ -8,10 +8,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from SteamRecommendation.steam_id import extract_steam_id
+from SteamRecommendation.user_api import steam_api
 
+
+user_api = steam_api()
 steam_id = extract_steam_id()
-
-API_KEY = "E895AD194456E34CA26E6270C5FE1C7B"
+print(user_api)
+API_KEY = user_api
 STEAM_ID = steam_id
 
 # Getting data from game_data file
